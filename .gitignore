@@ -1,0 +1,33 @@
+# 内部メモ
+notes/
+scripts/
+roadmap.md
+tmp.md
+
+# Secrets(絶対!)
+*.key
+*.pem
+.env
+.env.*
+!.env.example
+secrets/
+**/vault.yml
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build / Temp
+tmp/
+*.tmp
+*.bak
+target/
+node_modules/
