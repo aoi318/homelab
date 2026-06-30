@@ -1,0 +1,5 @@
+# 既定: テキストは LF に正規化 (Linux VM へ配布/実行されるため)
+* text=auto eol=lf
+
+# Windows 専用スクリプトは CRLF
+*.ps1 text eol=crlf
