@@ -1,0 +1,14 @@
+server:
+    interface: 0.0.0.0
+    access-control: {{ lab_network }} allow
+    access-control: 127.0.0.1/8 allow
+    local-zone: "{{ lab_domain }}." static
+{% for r in lab_records %}
+    local-data: "{{ r.name }}.{{ lab_domain }}. IN A {{ r.ip }}"
+{% endfor %}
+
+forward-zone:
+    name: "."
+{% for fa in dns_forwarders %}
+    forward-addr: {{ fa }}
+{% endfor %}

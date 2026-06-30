@@ -1,0 +1,9 @@
+---
+- name: unbound lab zone + forwarder config
+  ansible.builtin.template:
+    src: lab.conf.j2
+    dest: /etc/unbound/unbound.conf.d/lab.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart unbound

@@ -1,0 +1,6 @@
+[Unit]
+Description=Compress/cleanup aggregated remote logs in /var/log/remote
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/remote-log-rotate.sh

@@ -1,0 +1,17 @@
+---
+- name: nict.go.jp をフォールバックNTPソースに
+  ansible.builtin.copy:
+    src: nict.sources
+    dest: /etc/chrony/sources.d/nict.sources
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart chrony
+
+- name: LAN へ NTP を提供 (allow)
+  ansible.builtin.lineinfile:
+    path: /etc/chrony/chrony.conf
+    line: "allow {{ lab_network }}"
+    regexp: '^allow\s'
+    state: present
+  notify: restart chrony

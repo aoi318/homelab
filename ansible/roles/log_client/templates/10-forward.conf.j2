@@ -1,0 +1,5 @@
+# forward all logs to infra01 over TCP 514 (role: log_client)
+*.* action(type="omfwd"
+           target="{{ infra_ip }}" port="514" protocol="tcp"
+           action.resumeRetryCount="-1"
+           queue.type="linkedList" queue.size="10000")

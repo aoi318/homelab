@@ -1,0 +1,15 @@
+---
+- name: point chrony at infra01
+  ansible.builtin.template:
+    src: infra.sources.j2
+    dest: /etc/chrony/sources.d/infra.sources
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart chrony
+
+- name: disable Ubuntu public NTS pools
+  ansible.builtin.file:
+    path: /etc/chrony/sources.d/ubuntu-ntp-pools.sources
+    state: absent
+  notify: restart chrony

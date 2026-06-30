@@ -1,0 +1,35 @@
+---
+# --- SSH hardening (全ホスト) ---
+- name: deploy sshd hardening drop-in
+  ansible.builtin.copy:
+    src: 99-hardening.conf
+    dest: /etc/ssh/sshd_config.d/99-hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload ssh
+
+# --- ufw (ホワイトリスト方式) ---
+- name: ufw default deny incoming
+  community.general.ufw:
+    direction: incoming
+    policy: deny
+
+- name: ufw default allow outgoing
+  community.general.ufw:
+    direction: outgoing
+    policy: allow
+
+- name: ufw allow configured ports
+  community.general.ufw:
+    rule: allow
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+    comment: "{{ item.comment }}"
+  loop: "{{ ufw_allowed }}"
+  loop_control:
+    label: "{{ item.port }}/{{ item.proto }}"
+
+- name: ufw enable
+  community.general.ufw:
+    state: enabled

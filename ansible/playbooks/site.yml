@@ -1,0 +1,20 @@
+---
+# Phase 1 / Step 7: 全VMへ Step4-6 の構成を適用
+- name: common baseline (all hosts)
+  hosts: all
+  roles:
+    - common
+
+- name: client services (db/web/mon/ca)
+  hosts: clients
+  roles:
+    - dns_client
+    - ntp_client
+    - log_client
+
+- name: infra services (infra01)
+  hosts: infra
+  roles:
+    - dns_server
+    - ntp_server
+    - log_server

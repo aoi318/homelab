@@ -1,0 +1,14 @@
+# Phase 1 lab inventory
+# ホスト識別子は FQDN。ssh は ~/.ssh/config のホストブロック
+# (literal IP + ProxyJump host=pve01) で解決するので ansible_host は不要。
+all:
+  children:
+    infra:
+      hosts:
+        infra01.lab.local:
+    clients:
+      hosts:
+        db01.lab.local:
+        web01.lab.local:
+        mon01.lab.local:
+        ca01.lab.local:

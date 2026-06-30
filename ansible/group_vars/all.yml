@@ -1,0 +1,21 @@
+# 全ホスト共通変数
+ansible_user: admin
+lab_domain: lab.local
+infra_ip: 192.168.10.10
+lab_network: 192.168.10.0/24
+
+# ufw: 全ホスト最低 ssh のみ許可 (infra は infra.yml で上書き)
+ufw_allowed:
+  - { port: "22", proto: "tcp", comment: "ssh" }
+
+# DNS (infra01 unbound)
+dns_forwarders:
+  - 1.1.1.1
+  - 8.8.8.8
+
+lab_records:
+  - { name: infra01, ip: 192.168.10.10 }
+  - { name: db01,    ip: 192.168.10.11 }
+  - { name: web01,   ip: 192.168.10.12 }
+  - { name: mon01,   ip: 192.168.10.13 }
+  - { name: ca01,    ip: 192.168.10.14 }

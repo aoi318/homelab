@@ -58,9 +58,11 @@ Lab内部とクライアント端末で経路を分離する。
 
 ### NTP
 
-Phase 1で`infra01`をローカルNTPサーバ(chrony)として構築し、全VMがそれを参照する構成にする。Phase 1着手前は外部NTP(`pool.ntp.org`)を一時的に参照する。
+`infra01`をローカルNTPサーバ(chrony)として構築済み(Phase 1)。全VMが`infra01`を参照し、`infra01`自身は上流(Ubuntu NTSプール + `nict.go.jp`)へ同期する。
 
 ## VM Inventory
+
+全VMの OS は Ubuntu Server 26.04 LTS(cloud-init で初期化)。
 
 ```mermaid
 flowchart TB
@@ -106,6 +108,8 @@ flowchart TB
 | `k3s-worker02.lab.local` | .22 | 30GB   | 3GB    | 2      | 6     | k3s worker                               |
 
 合計リソース: Disk 190GB / RAM 17GB / vCPU 14。RAM 17GBは物理14GB上限を超えるため、Phase 5までのVMとPhase 6のk3sは相互排他で起動する。
+
+> **現状(Phase 1完了時点)**: 上表は各VMの目標スペック。実機は全VM一律 **32GB / 1GB RAM / 1 vCPU**(テンプレートからクローンしたまま)で稼働中。役割別のリサイズは各ワークロード導入時(Phase 2以降)に実施する。
 
 ## 認証・セキュリティ方針
 

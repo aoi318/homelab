@@ -1,0 +1,7 @@
+# infra01 専用変数 (DNS/NTP/syslog サーバとして追加ポートを開放)
+ufw_allowed:
+  - { port: "22",  proto: "tcp", comment: "ssh" }
+  - { port: "53",  proto: "tcp", comment: "dns" }
+  - { port: "53",  proto: "udp", comment: "dns" }
+  - { port: "123", proto: "udp", comment: "ntp" }
+  - { port: "514", proto: "tcp", comment: "syslog" }

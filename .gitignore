@@ -1,6 +1,5 @@
-# 内部メモ
-notes/
-scripts/
+# 内部メモ(非公開)
+private/
 
 # Secrets(絶対!)
 *.key

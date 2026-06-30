@@ -1,0 +1,18 @@
+network:
+  version: 2
+  ethernets:
+    eth0:
+      match:
+        macaddress: {{ ansible_default_ipv4.macaddress }}
+      addresses:
+      - {{ ansible_default_ipv4.address }}/24
+      nameservers:
+        addresses:
+        - {{ infra_ip }}
+        search:
+        - {{ lab_domain }}
+      set-name: eth0
+      routes:
+      - to: default
+        via: {{ ansible_default_ipv4.gateway }}
+      accept-ra: false

@@ -1,0 +1,17 @@
+---
+- name: stop cloud-init from regenerating network config
+  ansible.builtin.copy:
+    src: 99-disable-network-config.cfg
+    dest: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: netplan -> DNS=infra01, accept-ra off (MAC/IPは現状facts保持)
+  ansible.builtin.template:
+    src: 50-cloud-init.yaml.j2
+    dest: /etc/netplan/50-cloud-init.yaml
+    owner: root
+    group: root
+    mode: "0600"
+  notify: netplan apply

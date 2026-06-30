@@ -1,0 +1,1 @@
+pool ntp.nict.go.jp iburst maxsources 2
