@@ -1,0 +1,59 @@
+---
+- name: install PostgreSQL + psycopg
+  ansible.builtin.apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2
+      - acl
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: ensure postgresql running
+  ansible.builtin.service:
+    name: postgresql
+    state: started
+    enabled: true
+
+- name: tuning drop-in (2GB向けパラメータ)
+  ansible.builtin.template:
+    src: 10-tuning.conf.j2
+    dest: "/etc/postgresql/{{ postgres_version }}/main/conf.d/10-tuning.conf"
+    owner: postgres
+    group: postgres
+    mode: "0644"
+  notify: restart postgresql
+
+- name: pg_hba - app user from web01 (scram-sha-256)
+  ansible.builtin.lineinfile:
+    path: "/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf"
+    line: "host    {{ app_db_name }}    {{ app_db_user }}    192.168.10.12/32    scram-sha-256"
+    regexp: '^host\s+{{ app_db_name }}\s+{{ app_db_user }}\s+192\.168\.10\.12'
+  notify: reload postgresql
+
+- name: ufw allow postgres from web01
+  community.general.ufw:
+    rule: allow
+    src: 192.168.10.12
+    port: "5432"
+    proto: tcp
+    comment: "postgres from web01"
+
+- name: create app role
+  become: true
+  become_user: postgres
+  community.postgresql.postgresql_user:
+    name: "{{ app_db_user }}"
+    password: "{{ app_db_password }}"
+    role_attr_flags: LOGIN
+    state: present
+  no_log: true
+
+- name: create app database
+  become: true
+  become_user: postgres
+  community.postgresql.postgresql_db:
+    name: "{{ app_db_name }}"
+    owner: "{{ app_db_user }}"
+    state: present

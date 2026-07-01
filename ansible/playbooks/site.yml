@@ -18,3 +18,9 @@
     - dns_server
     - ntp_server
     - log_server
+
+# Phase 2
+- name: db services (db01)
+  hosts: db
+  roles:
+    - postgres

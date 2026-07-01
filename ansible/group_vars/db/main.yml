@@ -1,0 +1,15 @@
+# db01 (PostgreSQL サーバ) 用変数
+postgres_version: 18
+app_db_name: urlshortener
+app_db_user: appuser
+# app_db_password は同ディレクトリの vault.yml(gitignore)で定義
+
+# PostgreSQL チューニング (2GB RAM 前提)
+pg_listen_addresses: "*"
+pg_shared_buffers: 512MB
+pg_effective_cache_size: 1536MB
+pg_maintenance_work_mem: 128MB
+pg_work_mem: 16MB
+pg_max_connections: 100
+pg_random_page_cost: "1.1"
+pg_effective_io_concurrency: 200
