@@ -1,0 +1,22 @@
+#cloud-config
+# Copy this file outside Git and replace the placeholder values before use.
+hostname: game01
+manage_etc_hosts: true
+ssh_pwauth: false
+disable_root: true
+
+users:
+  - name: admin
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - REPLACE_WITH_ADMIN_SSH_PUBLIC_KEY
+
+package_update: true
+package_upgrade: false
+packages:
+  - qemu-guest-agent
+
+runcmd:
+  - systemctl enable --now qemu-guest-agent

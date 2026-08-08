@@ -39,7 +39,7 @@ Phase 1: infra01 🟡 構築済み・DHCP予約待ち
 
         ↓
 
-Phase 2: game01
+Phase 2: game01 🟡 構築済み・DHCP予約待ち
     ・Debian
     ・固定IP
     ・admin / gamebot / backupuser
