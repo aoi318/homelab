@@ -26,7 +26,7 @@
 
 | VM | 役割 | vCPU | RAM | Disk | 起動方針 |
 | --- | --- | ---: | ---: | ---: | --- |
-| OPNsense | ルーティング、Firewall、NAT、DNS、NTP | 2 | 2GB | 16GB | 自動起動 |
+| OPNsense | ルーティング、Firewall、NAT、DNS、NTP | 2 | 4GB | 16GB | 自動起動 |
 | infra01 | Discord Botなどのインフラサービス | 2 | 2GB | 32GB | 自動起動 |
 | game01 | Docker上のゲームサーバー | 4 | 6GB | 100GB | 必要時のみ |
 | lab01 | OSPFなどのネットワーク検証 | 2 | 2GB | 32GB | 必要時のみ |
@@ -125,4 +125,3 @@ Gitへ登録しないもの:
 - 外部公開範囲を最小限にする
 - Labを完全分離する
 - 現時点で不要な機能を実装しない
-
