@@ -30,7 +30,7 @@ Phase 0A.1: ブリッジ構成の簡素化 ✅ 完了（2026-08-09）
 
         ↓
 
-Phase 1: infra01 🟡 構築済み・DHCP予約待ち
+Phase 1: infra01 ✅ 完了（2026-08-09）
     ・Debian
     ・固定IP
     ・SSH
@@ -39,7 +39,7 @@ Phase 1: infra01 🟡 構築済み・DHCP予約待ち
 
         ↓
 
-Phase 2: game01 🟡 構築済み・DHCP予約待ち
+Phase 2: game01 ✅ 完了（2026-08-09）
     ・Debian
     ・固定IP
     ・admin / gamebot / backupuser
