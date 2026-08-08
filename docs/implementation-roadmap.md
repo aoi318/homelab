@@ -9,32 +9,28 @@
 3. 実測した設定・検証結果・復旧手順を記録する
 4. コミットして次の範囲へ進む
 
-各範囲は、失敗しても家庭内LAN上のProxmox管理経路を維持したまま戻せることを原則とする。
+初期構成では、PVEの管理経路とLabの完全分離を維持する。通常VMは家庭内LAN上の`vmbr0`へ接続し、PVEホストをルーターとして使わない。
 
 ## 実装順序
 
 ```text
-Phase 0A: Proxmox基盤 ✅ 完了（2026-08-08）
+Phase 0A: PVE基盤 ✅ 完了
     ・家庭内LAN管理経路確認
-    ・vmbr1
-    ・vmbr2
-    ・VLAN-aware
+    ・vmbr1（Lab分離）
     ・再起動試験
 
         ↓
 
-Phase 1: OPNsense
-    ・WAN
-    ・LAN
-    ・VLAN20 Infra
-    ・VLAN30 Game
-    ・Routing
-    ・Firewall
-    ・DNS/NTP
+Phase 0A.1: ブリッジ構成の簡素化
+    ・vmbr0を通常VM用として確認
+    ・vmbr1をLab専用として確認
+    ・不要なvmbr2を削除
+    ・PVEにLab向けIP・ルーティングを追加しないことを確認
+    ・再起動試験
 
         ↓
 
-Phase 2: infra01
+Phase 1: infra01
     ・Debian
     ・固定IP
     ・SSH
@@ -43,7 +39,7 @@ Phase 2: infra01
 
         ↓
 
-Phase 3: game01
+Phase 2: game01
     ・Debian
     ・固定IP
     ・admin / gamebot / backupuser
@@ -53,7 +49,7 @@ Phase 3: game01
 
         ↓
 
-Phase 4A: Game Server
+Phase 3: Game Server
     ・Compose
     ・ゲーム起動
     ・停止
@@ -61,8 +57,8 @@ Phase 4A: Game Server
 
         ↓
 
-Phase 4B: Backup
-    ・PVE → game01 SSH
+Phase 4: Backup
+    ・PVE → game01 SSHの管理経路設計
     ・tar.zst
     ・1世代保持
     ・復元試験
@@ -70,8 +66,8 @@ Phase 4B: Backup
         ↓
 
 Phase 4C: 外部公開
-    ・OPNsense NAT
     ・家庭用ルーター Port Forward
+    ・game01のホストFirewall
     ・外部接続試験
     ・不要ポート閉塞確認
 
@@ -79,7 +75,7 @@ Phase 4C: 外部公開
 
 Phase 5: Discord Bot
     ・Proxmox API
-    ・gamebot SSH
+    ・game01の専用操作経路
     ・!start
     ・!stop
     ・!status
@@ -88,7 +84,7 @@ Phase 5: Discord Bot
 
         ↓
 
-Phase 0B: Proxmox管理強化
+Phase 0B: PVE管理強化
     ・管理ユーザー
     ・SSH公開鍵
     ・root SSH禁止
@@ -108,30 +104,20 @@ Phase 6: Lab
 Phase 7: 運用仕上げ
     ・再構築試験
     ・ゲームワールド復元試験
-    ・OPNsense障害試験
+    ・ネットワーク境界障害試験
     ・PVE再起動試験
     ・ドキュメント整理
     ・v1.0判定
 ```
 
-## Phase 0A: Proxmox基盤（完了）
+## OPNsenseの扱い
 
-Phase 0Aでは、既存の管理PCから家庭内LAN経由でProxmoxへ接続する経路を変更しない。PVEの管理IP、デフォルトゲートウェイ、SSH認証方式、ホストファイアウォールはこの段階では変更しない。
+OPNsenseはSHOULD機能であり、初期構成の前提としない。通常VMは家庭内LANへ直接接続し、外部公開は家庭用ルーターとgame01のホストFirewallで制御する。
 
-ここで作成する`vmbr1`と`vmbr2`は物理NICを接続しない仮想ブリッジである。PVE管理ネットワークの`vmbr0`とは役割を分離する。
+OPNsenseを将来採用する場合は、ルーティング、Firewall、NAT、集中DNS/NTPを担わせる。初期構成ではPVEホストへルーター機能を追加しない。
 
-- `vmbr1`: lab01専用の完全分離ネットワーク
-- `vmbr2`: OPNsense LANおよびVLAN 20/30を収容する、VLAN-awareなHomeLab内部ネットワーク
+## 次に着手する範囲: Phase 0A.1
 
-Phase 0Aの完了条件は次のとおり。
+通常VMが`vmbr0`を使用し、lab01だけが`vmbr1`を使用する構成へ整える。`vmbr2`は不要なため削除する。PVEに`vmbr1`向けのIPアドレス、デフォルトゲートウェイ、ルーティングを設定しない。
 
-- [x] 作業前後で管理PCからPVEのWeb GUIおよびSSHへ接続できる
-- [x] `vmbr1`と`vmbr2`が意図した設定で存在する
-- [x] PVEを再起動しても、`vmbr0`の管理経路と新しいブリッジ設定が維持される
-- [x] 設定内容とロールバック手順を記録する
-
-## 補足
-
-Phase 0Bは、PVE上で運用するVMと管理・復旧手順が安定してから実施する。root SSHを無効化する前に、管理用ユーザーのSSH公開鍵認証と、別セッションからのログインを必ず確認する。
-
-外部公開はPhase 4Cまで行わず、Proxmox、OPNsense管理画面、infra01、lab01をインターネットへ公開しない。
+この範囲ではOPNsense VMを利用しない。PVEの家庭内LAN上の管理IP、`vmbr0`、SSH認証方式、ホストファイアウォールは変更しない。

@@ -50,6 +50,7 @@
 
 ## 2.2 SHOULD
 
+* OPNsense等の専用ルーター／Firewallを導入できること
 * VPN
 * 監視システム
 
