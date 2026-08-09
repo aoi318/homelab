@@ -2,7 +2,7 @@
 
 実運用を前提とした個人向けホームサーバー基盤。
 
-Proxmox VE上にOPNsense、Discord Bot、ゲームサーバー、独立したネットワーク検証環境を構築する。構成と設定はGitで管理し、永続データ以外は再構築可能にする。
+Proxmox VE上にDiscord Bot、ゲームサーバー、独立したネットワーク検証環境を構築する。構成と設定はGitで管理し、永続データ以外は再構築可能にする。
 
 ## 目的
 
@@ -19,6 +19,8 @@ Phase 0B（PVE管理強化）と、ゲームVMを操作するDiscord Botを構�
 
 - [要件定義](docs/requirements.md)
 - [基本設計](docs/basic-design.md)
+- [実装ロードマップ](docs/implementation-roadmap.md)
+- [Discord Bot](discord-bot/README.md)
 
 ## ライセンス
 
