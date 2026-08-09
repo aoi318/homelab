@@ -1,0 +1,12 @@
+---
+- name: Apply common VM configuration
+  hosts: linux_vms
+  become: true
+  roles:
+    - vm_common
+
+- name: Install Docker runtime
+  hosts: docker_hosts
+  become: true
+  roles:
+    - docker

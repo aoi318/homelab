@@ -1,0 +1,5 @@
+homelab_vm_common_packages:
+  - ca-certificates
+  - curl
+  - qemu-guest-agent
+  - ufw

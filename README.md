@@ -21,6 +21,7 @@ Phase 0B（PVE管理強化）と、ゲームVMを操作するDiscord Botを構�
 - [基本設計](docs/basic-design.md)
 - [実装ロードマップ](docs/implementation-roadmap.md)
 - [Discord Bot](discord-bot/README.md)
+- [Ansible](ansible/README.md)
 
 ## ライセンス
 

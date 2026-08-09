@@ -1,0 +1,39 @@
+---
+- name: Install common packages
+  ansible.builtin.apt:
+    name: "{{ homelab_vm_common_packages }}"
+    state: present
+    update_cache: true
+
+- name: Enable QEMU Guest Agent
+  ansible.builtin.service:
+    name: qemu-guest-agent
+    state: started
+    enabled: true
+
+- name: Disable root and password SSH access
+  ansible.builtin.template:
+    src: 10-homelab.conf.j2
+    dest: /etc/ssh/sshd_config.d/10-homelab.conf
+    owner: root
+    group: root
+    mode: "0644"
+    validate: /usr/sbin/sshd -t -f %s
+  notify: Reload SSH
+
+- name: Deny incoming traffic by default
+  ansible.builtin.command: ufw default deny incoming
+  changed_when: false
+
+- name: Allow outgoing traffic by default
+  ansible.builtin.command: ufw default allow outgoing
+  changed_when: false
+
+- name: Allow SSH only from the management PC
+  ansible.builtin.command: >-
+    ufw allow from {{ homelab_management_ipv4 }} to any port 22 proto tcp
+  changed_when: false
+
+- name: Enable UFW
+  ansible.builtin.command: ufw --force enable
+  changed_when: false

@@ -1,5 +1,6 @@
 # 内部メモ(非公開)
 private/
 **/.env
+ansible/inventories/local/
 __pycache__/
 *.py[cod]
