@@ -93,9 +93,9 @@ Phase 0B: PVE管理強化
 
         ↓
 
-Phase 6: Lab
+Phase 6: Lab ✅ 完了（2026-08-09）
     ・vmbr1接続
-    ・lab01
+    ・frr01 / frr02 / ospf01 / ospf02
     ・完全分離確認
     ・OSPF検証開始
 
@@ -116,8 +116,8 @@ OPNsenseはSHOULD機能であり、初期構成の前提としない。通常VM�
 
 OPNsenseを将来採用する場合は、ルーティング、Firewall、NAT、集中DNS/NTPを担わせる。初期構成ではPVEホストへルーター機能を追加しない。
 
-## 次に着手する範囲: Phase 0A.1
+## 現在の着手範囲: Phase 6
 
-通常VMが`vmbr0`を使用し、lab01だけが`vmbr1`を使用する構成へ整えた。`vmbr2`は削除済みである。PVEに`vmbr1`向けのIPv4、デフォルトゲートウェイ、ルーティングを設定していない。
+Phase 3、Phase 4、Phase 4C、Phase 5、Phase 0Bを保留して、Labを先行して構築する。`frr01`、`frr02`、`ospf01`、`ospf02` を`vmbr1`へ接続し、FRR 2台と自作OSPFルーター2台の相互接続を検証する。PVEに`vmbr1`向けのIPv4、デフォルトゲートウェイ、ルーティングを設定しない。
 
-この範囲ではOPNsense VMを利用しない。PVEの家庭内LAN上の管理IP、`vmbr0`、SSH認証方式、ホストファイアウォールは変更しない。
+FRRのパッケージ導入に限り、初回起動時だけ一時的に`vmbr0`へ接続する。導入後は停止して`vmbr1`へ移し、Lab VMに通常環境への経路を残さない。この範囲ではOPNsense VMを利用せず、PVEの家庭内LAN上の管理IP、`vmbr0`、SSH認証方式、ホストファイアウォールは変更しない。
