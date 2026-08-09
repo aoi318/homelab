@@ -55,6 +55,8 @@ Phase 3: Game Server
     ・停止
     ・内部接続確認
 
+    ※ 実際にゲームを遊ぶ予定が決まった時点で、Phase 4・4Cとまとめて着手する。
+
         ↓
 
 Phase 4: Backup
@@ -73,18 +75,18 @@ Phase 4C: 外部公開
 
         ↓
 
-Phase 5: Discord Bot
+Phase 5: Discord Bot ✅ 完了（2026-08-09）
     ・Proxmox API
     ・game01の専用操作経路
     ・!start
     ・!stop
     ・!status
-    ・バックアップ連携
-    ・異常通知
+    ・起動・停止完了確認
+    ・バックアップ連携、異常通知はゲーム運用開始後に実施
 
         ↓
 
-Phase 0B: PVE管理強化
+Phase 0B: PVE管理強化 ✅ 完了（2026-08-09）
     ・管理ユーザー
     ・SSH公開鍵
     ・root SSH禁止
@@ -101,7 +103,7 @@ Phase 6: Lab ✅ 完了（2026-08-09）
 
         ↓
 
-Phase 7: 運用仕上げ
+Phase 7: 運用仕上げ（段階実施）
     ・再構築試験
     ・ゲームワールド復元試験
     ・ネットワーク境界障害試験
@@ -116,8 +118,14 @@ OPNsenseはSHOULD機能であり、初期構成の前提としない。通常VM�
 
 OPNsenseを将来採用する場合は、ルーティング、Firewall、NAT、集中DNS/NTPを担わせる。初期構成ではPVEホストへルーター機能を追加しない。
 
-## 現在の着手範囲: Phase 6
+## 現在の着手範囲: Phase 7
 
-Phase 3、Phase 4、Phase 4C、Phase 5、Phase 0Bを保留して、Labを先行して構築する。`frr01`、`frr02`、`ospf01`、`ospf02` を`vmbr1`へ接続し、FRR 2台と自作OSPFルーター2台の相互接続を検証する。PVEに`vmbr1`向けのIPv4、デフォルトゲートウェイ、ルーティングを設定しない。
+Phase 3、Phase 4、Phase 4Cは、実際にゲームを遊ぶ予定が決まった時点でまとめて着手する。LabのOSPF検証は自作OSPFルータープロジェクト側で継続する。ゲーム関連以外の実装は完了し、実測結果と復旧手順を整理する。
 
-FRRのパッケージ導入に限り、初回起動時だけ一時的に`vmbr0`へ接続する。導入後は停止して`vmbr1`へ移し、Lab VMに通常環境への経路を残さない。この範囲ではOPNsense VMを利用せず、PVEの家庭内LAN上の管理IP、`vmbr0`、SSH認証方式、ホストファイアウォールは変更しない。
+実施済みの運用試験:
+
+- [x] `infra01`再起動後、DockerとDiscord Botが自動復帰する
+- [x] PVE再起動後、PVE Firewall、`infra01`の自動起動、Discord Botの自動復帰を確認する
+- [x] Discord Botから`game01`の状態確認、起動、正常停止を確認する
+
+OPNsense VMは利用せず、PVEの家庭内LAN上の管理IPと`vmbr0`は変更しない。ゲームワールド復元試験、ゲームの外部接続試験、バックアップ連携、異常通知はゲーム運用開始後に実施する。
