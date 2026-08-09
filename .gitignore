@@ -1,3 +1,5 @@
 # 内部メモ(非公開)
 private/
 **/.env
+__pycache__/
+*.py[cod]
